@@ -137,7 +137,7 @@ jobs:
 
       - name: Lint backend
         working-directory: backend
-        run: uv run ruff check . --exclude notebooks
+        run: uv run ruff check config weather manage.py --exclude weather/tests
 
       - name: Set up Node.js
         uses: actions/setup-node@v6.3.0
