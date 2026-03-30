@@ -200,6 +200,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4.0.0
 
+      - name: Compute lowercase image owner
+        id: image-vars
+        run: echo "owner_lc=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
       - name: Login to GHCR (main only)
         if: github.ref == 'refs/heads/main'
         uses: docker/login-action@v4.0.0
@@ -215,8 +219,8 @@ jobs:
           file: backend/Dockerfile
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: |
-            ghcr.io/${{ github.repository_owner }}/meteo-backend:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/meteo-backend:latest
+            ghcr.io/${{ steps.image-vars.outputs.owner_lc }}/meteo-backend:${{ github.sha }}
+            ghcr.io/${{ steps.image-vars.outputs.owner_lc }}/meteo-backend:latest
 
       - name: Build and optionally push frontend image
         uses: docker/build-push-action@v7.0.0
@@ -225,5 +229,5 @@ jobs:
           file: frontend/Dockerfile
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: |
-            ghcr.io/${{ github.repository_owner }}/meteo-frontend:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/meteo-frontend:latest
+            ghcr.io/${{ steps.image-vars.outputs.owner_lc }}/meteo-frontend:${{ github.sha }}
+            ghcr.io/${{ steps.image-vars.outputs.owner_lc }}/meteo-frontend:latest
