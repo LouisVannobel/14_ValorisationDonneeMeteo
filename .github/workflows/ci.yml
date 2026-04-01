@@ -174,16 +174,32 @@ jobs:
           ignore-unfixed: true
           exit-code: "0"
 
+      - name: Generate CycloneDX SBOM with VEX
+        uses: aquasecurity/trivy-action@v0.35.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: cyclonedx
+          output: sbom-vex.json
+          severity: CRITICAL,HIGH,MEDIUM
+          ignore-unfixed: false
+
       - name: Upload Trivy SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: trivy-results.sarif
 
-      - name: Upload scan report artifact
+      - name: Upload scan code report (SARIF)
         uses: actions/upload-artifact@v4
         with:
           name: scan-code-report
           path: trivy-results.sarif
+
+      - name: Upload SBOM/VEX Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-vex-report
+          path: sbom-vex.json
 
   build-docker-image:
     name: Build Docker image
