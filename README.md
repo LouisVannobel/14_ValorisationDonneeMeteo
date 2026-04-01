@@ -1,7 +1,7 @@
 # Valorisation Donnée Météo
 
-![CI Pipeline](https://github.com/dataforgoodfr/14_ValorisationDonneeMeteo/actions/workflows/ci.yml/badge.svg)
-![Scorecard supply-chain security](https://github.com/dataforgoodfr/14_ValorisationDonneeMeteo/actions/workflows/scorecard.yml/badge.svg)
+[![CI Pipeline](https://github.com/LouisVannobel/14_ValorisationDonneeMeteo/actions/workflows/ci.yml/badge.svg)](https://github.com/LouisVannobel/14_ValorisationDonneeMeteo/actions/workflows/ci.yml)
+[![Scorecard supply-chain security](https://github.com/LouisVannobel/14_ValorisationDonneeMeteo/actions/workflows/scorecard.yml/badge.svg)](https://github.com/LouisVannobel/14_ValorisationDonneeMeteo/actions/workflows/scorecard.yml)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/1/badge)](https://www.bestpractices.dev/projects/1)
 
 Projet Data For Good - Saison 14
