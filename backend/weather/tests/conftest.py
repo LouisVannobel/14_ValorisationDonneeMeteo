@@ -20,6 +20,12 @@ def setup_db_schema_and_views(django_db_setup, django_db_blocker):
 
     with django_db_blocker.unblock():
         with connection.cursor() as cur:
+            cur.execute(
+                """
+                DROP VIEW IF EXISTS public.v_quotidienne_itn CASCADE;
+                DROP VIEW IF EXISTS public.v_station CASCADE;
+                """
+            )
             cur.execute(schema_sql)
             cur.execute(v_station_sql)
             cur.execute(v_quot_sql)

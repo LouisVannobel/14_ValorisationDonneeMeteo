@@ -2,14 +2,18 @@
 Root URL configuration for meteo-api.
 """
 
-from django.urls import include, path
+from django.urls import include, path, re_path
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
 
+from .metrics import metrics_view
+
 urlpatterns = [
+    # Metrics exposed for Prometheus
+    re_path(r"^metrics/?$", metrics_view, name="metrics"),
     # API v1
     path("api/v1/", include("weather.urls")),
     # OpenAPI schema and documentation

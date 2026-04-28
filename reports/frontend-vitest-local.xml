@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="68" failures="0" errors="0" time="0.079859836">
+    <testsuite name="app/adapters/deviationSelectBarAdapter.test.ts" timestamp="2026-04-28T08:13:45.249Z" hostname="MSI" tests="15" failures="0" errors="0" skipped="0" time="0.013592825">
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should return adapter with all required properties" time="0.007412548">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should expose correct feature flags" time="0.001146239">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should bind setGranularity method from store" time="0.001279645">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should not expose setChartType method" time="0.000226722">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should not expose chartType and chartTypeSwitchEnabled properties" time="0.000353331">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should expose chartRef from store" time="0.000179455">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should expose data from deviationData store property" time="0.000178871">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should expose pending state from store" time="0.000119412">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should maintain reactivity with store changes" time="0.000244963">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should expose exportConfig object" time="0.000137224">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should expose correct chartName in exportConfig" time="0.000092459">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should expose non-empty csvHeaders in exportConfig" time="0.000216769">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should expose getCsvRows as a function in exportConfig" time="0.000095852">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should return undefined from getCsvRows when deviationData is undefined" time="0.000181723">
+        </testcase>
+        <testcase classname="app/adapters/deviationSelectBarAdapter.test.ts" name="useDeviationSelectBarAdapter &gt; should have hasExport set to true in features" time="0.00012281">
+        </testcase>
+    </testsuite>
+    <testsuite name="app/adapters/itnSelectBarAdapter.test.ts" timestamp="2026-04-28T08:13:45.259Z" hostname="MSI" tests="16" failures="0" errors="0" skipped="0" time="0.01270748">
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should return adapter with all required properties" time="0.003498946">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should expose correct feature flags" time="0.003955161">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should bind setGranularity method from store" time="0.00164356">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should bind turnOffSliceType method from store" time="0.000314939">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should expose chartRef from store" time="0.000200952">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should expose data from itnData store property" time="0.000169354">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should expose pending state from store" time="0.000118879">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should maintain reactivity with store changes" time="0.000262738">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should not expose setChartType method" time="0.000251682">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should not expose chartType and chartTypeSwitchEnabled properties" time="0.000191095">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should expose exportConfig object" time="0.000101312">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should expose correct chartName in exportConfig" time="0.000089111">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should expose non-empty csvHeaders in exportConfig" time="0.000185254">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should expose getCsvRows as a function in exportConfig" time="0.000095496">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should return undefined from getCsvRows when itnData is undefined" time="0.000084652">
+        </testcase>
+        <testcase classname="app/adapters/itnSelectBarAdapter.test.ts" name="useItnSelectBarAdapter &gt; should have hasExport set to true in features" time="0.000098379">
+        </testcase>
+    </testsuite>
+    <testsuite name="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" timestamp="2026-04-28T08:13:45.269Z" hostname="MSI" tests="15" failures="0" errors="0" skipped="0" time="0.018892101">
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; returns empty string when params is not an array" time="0.001070693">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; returns empty string when params array is empty" time="0.00019832">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; returns the right string with granularity : day" time="0.012155484">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; returns the right string with granularity : month" time="0.000389166">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; returns the right string with granularity : year" time="0.000305133">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; formats date with month and year for &apos;month&apos; granularity" time="0.000561392">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; formats date with year only for &apos;year&apos; granularity" time="0.000237542">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; formats date with weekday, day, month and year for &apos;day&apos; granularity" time="0.000301994">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; uses &apos;Ecart positif&apos; series and &apos;+&apos; sign for positive deviation" time="0.000379219">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; formats positive deviation with one decimal place" time="0.000246812">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; uses &apos;Ecart négatif&apos; series and no &apos;+&apos; sign for negative deviation" time="0.000249791">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; formats negative deviation with one decimal place" time="0.000148785">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; treats zero deviation as positive (uses &apos;+&apos; sign and &apos;Ecart positif&apos; series)" time="0.000156803">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; falls back to empty string when matching series has no marker" time="0.00015655">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/deviationChartTooltipFormatter.test.ts" name="deviationChartTooltipFormatter &gt; joins date and value lines with &lt;br/&gt;" time="0.000720857">
+        </testcase>
+    </testsuite>
+    <testsuite name="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" timestamp="2026-04-28T08:13:45.280Z" hostname="MSI" tests="22" failures="0" errors="0" skipped="0" time="0.03466743">
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; returns empty string when params is not an array" time="0.000910919">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; returns empty string when params array is empty" time="0.000208129">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; returns empty string when isInterpolated is truthy" time="0.000149914">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; returns content when isInterpolated is 0" time="0.027578193">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; returns the right string with granularity : day" time="0.000356242">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; returns the right string with granularity : month" time="0.000279877">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; returns the right string with granularity : year" time="0.000517691">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; formats date with month and year for &apos;month&apos; granularity" time="0.000507576">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; formats date with year only for &apos;year&apos; granularity" time="0.000325635">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; formats date with weekday, day, month and year for &apos;day&apos; granularity" time="0.000260644">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; joins 5 lines with &lt;br/&gt;" time="0.000682883">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; first line is the formatted date" time="0.000212191">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; includes Température with marker and formatted value" time="0.000163172">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; formats temperature with one decimal place" time="0.000139069">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; includes Indicateur MF with marker and formatted value" time="0.000163554">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; formats baseline_mean with one decimal place" time="0.000146909">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; includes Extrêmes with marker and range" time="0.000147324">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; formats extremes with one decimal place" time="0.000127058">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; includes Écart-type with marker and range" time="0.000157552">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; formats std dev bounds with one decimal place" time="0.000123762">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; falls back to empty string when series marker is absent" time="0.000117949">
+        </testcase>
+        <testcase classname="app/components/charts/tooltipFormatters/itnChartTooltipFormatter.test.ts" name="itnChartTooltipFormatter &gt; falls back to empty string when a series is not found in params" time="0.000185492">
+        </testcase>
+    </testsuite>
+</testsuites>

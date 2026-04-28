@@ -1,0 +1,8 @@
+{
+  "@context": "https://openvex.dev/ns/v0.2.0",
+  "@id": "https://github.com/LouisVannobel/14_ValorisationDonneeMeteo/security/vex/1",
+  "author": "LouisVannobel",
+  "timestamp": "2026-04-28T00:00:00Z",
+  "version": 1,
+  "statements": []
+}

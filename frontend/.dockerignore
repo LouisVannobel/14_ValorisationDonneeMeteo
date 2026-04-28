@@ -1,0 +1,10 @@
+node_modules
+**/node_modules
+.nuxt
+**/.nuxt
+.output
+**/.output
+.cache
+**/.cache
+dist
+coverage

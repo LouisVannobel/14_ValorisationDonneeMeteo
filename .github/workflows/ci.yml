@@ -11,6 +11,9 @@ permissions:
   packages: write
   security-events: write
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   install-dependencies:
     name: Install dependencies
@@ -50,7 +53,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16
+        image: timescale/timescaledb:2.25.0-pg17
         env:
           POSTGRES_DB: meteodb
           POSTGRES_USER: infoclimat
@@ -90,7 +93,7 @@ jobs:
           DB_NAME: meteodb
           DB_USER: infoclimat
           DB_PASSWORD: infoclimat2026
-        run: uv run pytest --junitxml=../reports/backend-pytest.xml
+        run: uv run pytest -s --junitxml=../reports/backend-pytest.xml
 
       - name: Set up Node.js
         uses: actions/setup-node@v6.3.0
@@ -163,43 +166,79 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
 
-      - name: Scan repository with Trivy
+      - name: Create reports directory
+        run: mkdir -p reports
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6.3.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci --legacy-peer-deps
+
+      - name: Audit frontend dependencies
+        working-directory: frontend
+        run: npm audit --audit-level=high
+
+      - name: Scan repository with Trivy (text report)
+        uses: aquasecurity/trivy-action@v0.35.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: table
+          output: reports/trivy-fs.txt
+          severity: CRITICAL,HIGH,MEDIUM
+          ignore-unfixed: true
+          exit-code: "0"
+
+      - name: Scan repository with Trivy (SARIF)
         uses: aquasecurity/trivy-action@v0.35.0
         with:
           scan-type: fs
           scan-ref: .
           format: sarif
-          output: trivy-results.sarif
+          output: reports/trivy-fs.sarif
           severity: CRITICAL,HIGH,MEDIUM
           ignore-unfixed: true
           exit-code: "0"
 
-      - name: Generate CycloneDX SBOM with VEX
+      - name: Generate CycloneDX SBOM
         uses: aquasecurity/trivy-action@v0.35.0
         with:
           scan-type: fs
           scan-ref: .
           format: cyclonedx
-          output: sbom-vex.json
+          output: reports/sbom.cdx.json
           severity: CRITICAL,HIGH,MEDIUM
           ignore-unfixed: false
+
+      - name: Publish OpenVEX file
+        run: cp .vex/vex.json reports/vex.openvex.json
 
       - name: Upload Trivy SARIF to GitHub Security
         uses: github/codeql-action/upload-sarif@v4
         with:
-          sarif_file: trivy-results.sarif
+          sarif_file: reports/trivy-fs.sarif
 
-      - name: Upload scan code report (SARIF)
+      - name: Upload scan code report
         uses: actions/upload-artifact@v4
         with:
           name: scan-code-report
-          path: trivy-results.sarif
+          path: |
+            reports/trivy-fs.txt
+            reports/trivy-fs.sarif
 
-      - name: Upload SBOM/VEX Artifact
+      - name: Upload SBOM and VEX reports
         uses: actions/upload-artifact@v4
         with:
           name: sbom-vex-report
-          path: sbom-vex.json
+          path: |
+            reports/sbom.cdx.json
+            reports/vex.openvex.json
 
   build-docker-image:
     name: Build Docker image
@@ -213,37 +252,118 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
 
+      - name: Create reports directory
+        run: mkdir -p reports
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4.0.0
 
+      - name: Select Docker base images
+        id: base-images
+        env:
+          DHI_USERNAME: ${{ secrets.DHI_USERNAME }}
+          DHI_TOKEN: ${{ secrets.DHI_TOKEN }}
+        run: |
+          if [ -n "$DHI_USERNAME" ] && [ -n "$DHI_TOKEN" ]; then
+            echo "use_dhi=true" >> "$GITHUB_OUTPUT"
+            echo "backend_build_image=dhi.io/python:3.12-dev" >> "$GITHUB_OUTPUT"
+            echo "backend_runtime_image=dhi.io/python:3.12" >> "$GITHUB_OUTPUT"
+            echo "frontend_build_image=dhi.io/node:24-dev" >> "$GITHUB_OUTPUT"
+            echo "frontend_runtime_image=dhi.io/node:24" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::DHI secrets are not configured; building with public base images."
+            echo "use_dhi=false" >> "$GITHUB_OUTPUT"
+            echo "backend_build_image=python:3.12-slim-bookworm" >> "$GITHUB_OUTPUT"
+            echo "backend_runtime_image=python:3.12-slim-bookworm" >> "$GITHUB_OUTPUT"
+            echo "frontend_build_image=node:24-alpine" >> "$GITHUB_OUTPUT"
+            echo "frontend_runtime_image=node:24-alpine" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Login to Docker Hardened Images
+        if: steps.base-images.outputs.use_dhi == 'true'
+        uses: docker/login-action@v4.0.0
+        with:
+          registry: dhi.io
+          username: ${{ secrets.DHI_USERNAME }}
+          password: ${{ secrets.DHI_TOKEN }}
+
       - name: Compute lowercase image owner
         id: image-vars
-        run: echo "owner_lc=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "owner_lc=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+          echo "backend_image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/meteo-backend" >> "$GITHUB_OUTPUT"
+          echo "frontend_image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/meteo-frontend" >> "$GITHUB_OUTPUT"
 
       - name: Login to GHCR (main only)
         if: github.ref == 'refs/heads/main'
         uses: docker/login-action@v4.0.0
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and optionally push backend image
+      - name: Build backend image
         uses: docker/build-push-action@v7.0.0
         with:
           context: backend
           file: backend/Dockerfile
-          push: ${{ github.ref == 'refs/heads/main' }}
+          load: true
+          build-args: |
+            PYTHON_BUILD_IMAGE=${{ steps.base-images.outputs.backend_build_image }}
+            PYTHON_RUNTIME_IMAGE=${{ steps.base-images.outputs.backend_runtime_image }}
           tags: |
-            ghcr.io/${{ steps.image-vars.outputs.owner_lc }}/meteo-backend:${{ github.sha }}
-            ghcr.io/${{ steps.image-vars.outputs.owner_lc }}/meteo-backend:latest
+            ${{ steps.image-vars.outputs.backend_image }}:${{ github.sha }}
+            ${{ steps.image-vars.outputs.backend_image }}:latest
 
-      - name: Build and optionally push frontend image
+      - name: Build frontend image
         uses: docker/build-push-action@v7.0.0
         with:
           context: frontend
           file: frontend/Dockerfile
-          push: ${{ github.ref == 'refs/heads/main' }}
+          load: true
+          build-args: |
+            NODE_BUILD_IMAGE=${{ steps.base-images.outputs.frontend_build_image }}
+            NODE_RUNTIME_IMAGE=${{ steps.base-images.outputs.frontend_runtime_image }}
           tags: |
-            ghcr.io/${{ steps.image-vars.outputs.owner_lc }}/meteo-frontend:${{ github.sha }}
-            ghcr.io/${{ steps.image-vars.outputs.owner_lc }}/meteo-frontend:latest
+            ${{ steps.image-vars.outputs.frontend_image }}:${{ github.sha }}
+            ${{ steps.image-vars.outputs.frontend_image }}:latest
+
+      - name: Scan backend image with Trivy
+        uses: aquasecurity/trivy-action@v0.35.0
+        with:
+          scan-type: image
+          image-ref: ${{ steps.image-vars.outputs.backend_image }}:${{ github.sha }}
+          format: table
+          output: reports/backend-image-trivy.txt
+          severity: CRITICAL,HIGH,MEDIUM
+          ignore-unfixed: true
+          exit-code: "0"
+
+      - name: Scan frontend image with Trivy
+        uses: aquasecurity/trivy-action@v0.35.0
+        with:
+          scan-type: image
+          image-ref: ${{ steps.image-vars.outputs.frontend_image }}:${{ github.sha }}
+          format: table
+          output: reports/frontend-image-trivy.txt
+          severity: CRITICAL,HIGH,MEDIUM
+          ignore-unfixed: true
+          exit-code: "0"
+
+      - name: Upload Trivy image reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-image-reports
+          path: reports/*-image-trivy.txt
+
+      - name: Push backend image (main only)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker push "${{ steps.image-vars.outputs.backend_image }}:${{ github.sha }}"
+          docker push "${{ steps.image-vars.outputs.backend_image }}:latest"
+
+      - name: Push frontend image (main only)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker push "${{ steps.image-vars.outputs.frontend_image }}:${{ github.sha }}"
+          docker push "${{ steps.image-vars.outputs.frontend_image }}:latest"

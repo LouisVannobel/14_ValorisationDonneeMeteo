@@ -1429,6 +1429,7 @@ dependencies = [
     { name = "drf-spectacular" },
     { name = "gunicorn" },
     { name = "numpy" },
+    { name = "prometheus-client" },
     { name = "psycopg", extra = ["binary"] },
     { name = "whitenoise" },
 ]
@@ -1470,6 +1471,7 @@ requires-dist = [
     { name = "pandas", marker = "extra == 'dev'", specifier = ">=2.0" },
     { name = "pandas", marker = "extra == 'notebooks'", specifier = ">=2.0" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=3.7.0" },
+    { name = "prometheus-client", specifier = ">=0.24.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=5.0.0" },

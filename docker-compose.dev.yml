@@ -8,7 +8,7 @@ services:
       POSTGRES_DB: meteodb
     volumes:
       - timescaledb-data:/var/lib/postgresql/data
-      - ./timescaledb-env/meteodb_dump.sql:/docker-entrypoint-initdb.d/dump.sql:ro
+      - ./db_data/meteodb_dump.sql:/docker-entrypoint-initdb.d/dump.sql:ro
     networks:
       - bd_net
     healthcheck:
@@ -31,9 +31,74 @@ services:
     networks:
       - app_net
 
+  prometheus:
+    image: prom/prometheus:v2.55.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    depends_on:
+      - backend
+      - cadvisor
+      - postgres-exporter
+    networks:
+      - app_net
+      - bd_net
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.52.1
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - app_net
+    restart: unless-stopped
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.16.0
+    environment:
+      DATA_SOURCE_NAME: postgresql://infoclimat:infoclimat2026@timescaledb:5432/meteodb?sslmode=disable
+    depends_on:
+      timescaledb:
+        condition: service_healthy
+    networks:
+      - bd_net
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - app_net
+    restart: unless-stopped
+
   backend:
     build:
       context: ./backend
+      args:
+        PYTHON_BUILD_IMAGE: ${BACKEND_PYTHON_BUILD_IMAGE:-python:3.12-slim-bookworm}
+        PYTHON_RUNTIME_IMAGE: ${BACKEND_PYTHON_RUNTIME_IMAGE:-python:3.12-slim-bookworm}
     env_file:
       - ./.env
     depends_on:
@@ -46,6 +111,9 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        NODE_BUILD_IMAGE: ${FRONTEND_NODE_BUILD_IMAGE:-node:24-alpine}
+        NODE_RUNTIME_IMAGE: ${FRONTEND_NODE_RUNTIME_IMAGE:-node:24-alpine}
     env_file:
       - ./.env
     networks:
@@ -53,6 +121,10 @@ services:
 
 volumes:
   timescaledb-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
     driver: local
 networks:
   app_net:
